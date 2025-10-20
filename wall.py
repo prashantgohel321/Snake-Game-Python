@@ -1,35 +1,46 @@
-
-"""This file creates the boundary wall around the game area."""
+"""This file creates a responsive boundary wall that adapts to the game window size."""
 
 from turtle import Turtle, Screen
 import colors
-# WALL_COLOR = '#27374D'
 
 class Wall:
-    """ This class creates a wall around the game screen. """
+    """ This class creates a wall around the game screen that adjusts to its dimensions. """
     def __init__(self):
+        self.screen = Screen()
         self.create_wall()
 
     def create_wall(self):
+        """Draws a responsive game border and a header area for the scoreboard and controls."""
+        width = self.screen.window_width()
+        height = self.screen.window_height()
+
+        # Calculate coordinates for the border based on screen size
+        top = height / 2
+        bottom = -height / 2
+        left = -width / 2
+        right = width / 2
+
         wall = Turtle()
-        screen = Screen()
-        screen.tracer(0)
-
-        wall.penup()
-        wall.goto(x=-390, y=-385)
-        wall.pendown()
-        wall.speed("slow")
-        wall.left(90)
-        wall.pensize(15)
-        wall.pencolor(colors.WALL_COLOR)
-
-        for i in range(4):
-            if i == 1:  # Top border
-                wall.pensize(60)
-            else:
-                wall.pensize(20)
-            wall.forward(775)
-            wall.right(90)
-            screen.update()
-
         wall.hideturtle()
+        wall.speed("fastest")
+        wall.color(colors.WALL_COLOR)
+        wall.penup()
+
+        # Draw the main rectangular border
+        wall.goto(left + 10, top - 10)
+        wall.pendown()
+        wall.pensize(10)
+        wall.goto(right - 10, top - 10)
+        wall.goto(right - 10, bottom + 10)
+        wall.goto(left + 10, bottom + 10)
+        wall.goto(left + 10, top - 10)
+
+        # Draw a line to create a separate header section for the score and buttons
+        wall.penup()
+        wall.goto(left + 10, top - 70)
+        wall.pendown()
+        wall.pensize(5)
+        wall.goto(right - 10, top - 70)
+
+        self.screen.update()
+
